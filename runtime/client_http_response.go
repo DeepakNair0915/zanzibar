@@ -182,7 +182,10 @@ func (res *ClientHTTPResponse) finish() {
 			zap.Int("UnknownStatusCode", res.StatusCode),
 		)
 	} else {
-		scopeTags := map[string]string{scopeTagStatus: fmt.Sprintf("%d", res.StatusCode)}
+		scopeTags := map[string]string{
+			scopeTagStatus:        fmt.Sprintf("%d", res.StatusCode),
+			scopeTagClientFailure: "true",
+		}
 		res.req.ctx = WithScopeTags(res.req.ctx, scopeTags)
 		res.req.metrics.IncCounter(res.req.ctx, clientStatus, 1)
 	}

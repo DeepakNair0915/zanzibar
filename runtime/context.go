@@ -77,6 +77,7 @@ const (
 	scopeTagTChannel        = "TChannel"
 	scopeTagsTargetService  = "targetservice"
 	scopeTagsTargetEndpoint = "targetendpoint"
+	scopeTagClientFailure   = "clientfailure" // When we return failure from client in the endpoint response
 )
 
 // WithEndpointField adds the endpoint information in the

@@ -56,10 +56,14 @@ func (c *tchannelOutboundCall) finish(ctx context.Context, err error) {
 	// emit metrics
 	if err != nil {
 		errCause := tchannel.GetSystemErrorCode(errors.Cause(err))
-		scopeTags := map[string]string{scopeTagError: errCause.MetricsKey()}
+		scopeTags := map[string]string{
+			scopeTagError:         errCause.MetricsKey(),
+			scopeTagClientFailure: "true",
+		}
 		ctx = WithScopeTags(ctx, scopeTags)
 		c.metrics.IncCounter(ctx, clientSystemErrors, 1)
 	} else if !c.success {
+		ctx = WithScopeTags(ctx, map[string]string{scopeTagClientFailure: "true"})
 		c.metrics.IncCounter(ctx, clientAppErrors, 1)
 	} else {
 		c.metrics.IncCounter(ctx, clientSuccess, 1)
